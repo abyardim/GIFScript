@@ -1,75 +1,69 @@
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.geom.Point2D;
 
 
-public class SLine extends SceneObject {
-
-	public Point2D.Double start, end;
-	public Color color;
+public class SLine extends SGeometricPrimitive {
 	
 	public SLine ( )
 	{
-		start = new Point2D.Double( );
-		end = new Point2D.Double( );
-		color = Color.BLACK;
+		super( new Point2D.Double[]{ new Point2D.Double(), new Point2D.Double()});
 	}
 	
 	public SLine ( Point2D.Double p1, Point2D.Double p2)
 	{
-		start = p1;
-		end = p2;
-		color = Color.BLACK;
+		super( new Point2D.Double[]{ p1, p2});
 	}
 	
 	public SLine ( Point2D.Double p1, Point2D.Double p2, Color c)
 	{
-		start = p1;
-		end = p2;
-		color = c;
+		super( new Point2D.Double[]{ p1, p2},
+				false,
+				true,
+				Color.WHITE,
+				c,
+				new BasicStroke());
+		
+		System.out.println( "Color: " + c);
+	}
+	
+	//// getters / setters for line properties
+	
+	public Point2D.Double getStart ( )
+	{
+		return points[0];
+	}
+	
+	public Point2D.Double getEnd ( )
+	{
+		return points[1];
+	}
+	
+	public void setEnd ( Point2D.Double end)
+	{
+		points[1] = new Point2D.Double( end.x, end.y);
+	}
+	
+	public void setStart ( Point2D.Double start)
+	{
+		points[0] = new Point2D.Double( start.x, start.y);
 	}
 	
 	@Override
 	public void render(Graphics2D g) {
-		g.setColor( color);
-		g.drawLine( (int) start.x, (int) start.y, (int) end.x, (int) end.y);
+		if ( getDrawStroke())
+		{
+			g.setColor( getStrokeColor());
+			g.setStroke( getStroke());
+			System.out.println( "Points: " + points[0] + points[1]);
+			g.drawLine( (int) points[0].x, (int) points[0].y, (int) points[1].x, (int) points[1].y);
+		}
 	}
 
-	@Override
-	public void translate(double dx, double dy) {
-		// TODO Auto-generated method stub
-		
-	}
 
-	@Override
-	public void rotate(double angle) {
-		// TODO Auto-generated method stub
-		
-	}
 
-	@Override
-	public void rotate(double angle, double centerx, double centery) {
-		// TODO Auto-generated method stub
-		
-	}
 
-	@Override
-	public void setCenter(double x, double y) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void setLocation(double x, double y) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void scale(double factor) {
-		// TODO Auto-generated method stub
-		
-	}
 	
 }
