@@ -73,6 +73,9 @@ public class GIFWriter {
 	
 	public void setDimensions ( int width, int height)
 	{
+		if ( width == this.width && height == this.height)
+			return;
+		
 		this.width = width;
 		this.height = height;
 		

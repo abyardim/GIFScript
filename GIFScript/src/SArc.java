@@ -4,20 +4,20 @@ import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
 
 
-public class SCircle extends SGeometricPrimitive {
-	public SCircle ( )
+public class SArc extends SGeometricPrimitive {
+	public SArc ( )
 	{
 		super( new Point2D.Double[]{ new Point2D.Double(), new Point2D.Double()});
 	}
 	
-	public SCircle ( Point2D.Double p1, double radius)
+	public SArc ( Point2D.Double p1, double radius)
 	{
 		super( new Point2D.Double[]{ p1, null});
 		
 		setRadius( radius);
 	}
 	
-	public SCircle ( Point2D.Double p1, double radius, Color c)
+	public SArc ( Point2D.Double p1, double radius, Color c)
 	{
 		super( new Point2D.Double[]{ p1, null},
 				false,

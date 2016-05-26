@@ -1,6 +1,5 @@
 var theta = 0.0;
 var phi = 0.0;
-var a = 100;
 
 for (i = 0; i < 200; i++)
 {
