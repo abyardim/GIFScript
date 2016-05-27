@@ -9,7 +9,8 @@ import java.io.UnsupportedEncodingException;
 import javax.script.ScriptContext;
 import javax.script.ScriptEngine;
 import javax.script.ScriptException;
-
+import jdk.nashorn.api.scripting.ScriptUtils;
+import jdk.nashorn.api.scripting.ScriptObjectMirror;
 
 public class ScriptEnvironment {
 	private AnimationScene scene;
@@ -32,26 +33,102 @@ public class ScriptEnvironment {
 		}
 	}
 	
-	public void line ( double p1x, double p1y, double p2x, double p2y, Color c)
+	public SLine drawLine ( double p1x, double p1y, double p2x, double p2y, Color c)
 	{
-		scene.addRenderable( new SLine( new Point2D.Double( p1x, p1y), new Point2D.Double( p2x, p2y), c ));
-		System.out.println( "line_color: " + c);
+		SLine line = new SLine( new Point2D.Double( p1x, p1y), new Point2D.Double( p2x, p2y), c );
+		scene.addRenderable( line);
+		
+		return line;
 	}
 	
-	public void line ( double p1x, double p1y, double p2x, double p2y)
+	public SArc drawCircle ( double centerx, double centery, double radius, boolean fill, 
+								boolean stroke, Color strokeColor, Color fillColor)
 	{
-		line( p1x, p1y, p2x, p2y, Color.BLACK);
+		 SArc arc = new SArc( new Point2D.Double( centerx, centery), radius, radius, strokeColor);
+		 arc.setDrawFill( fill);
+		 arc.setDrawStroke( stroke);
+		 
+		 if ( fill)
+			 arc.setFillColor( fillColor);
+		 if ( stroke)
+			 arc.setDrawStroke( stroke);
+		 
+		 scene.addRenderable( arc);
+		 
+		 return arc;
 	}
 	
-	
-	public void frame ( int delay, boolean clearScene)
+	public SArc drawOval ( double centerx, double centery, double radius1, double radius2,
+							boolean fill, boolean stroke, Color strokeColor, Color fillColor)
 	{
-		scene.drawFrameTo( writer, delay, clearScene);
+		SArc arc = new SArc( new Point2D.Double( centerx, centery), radius1, radius2, strokeColor);
+		arc.setDrawFill( fill);
+		arc.setDrawStroke( stroke);
+
+		if ( fill)
+			arc.setFillColor( fillColor);
+		if ( stroke)
+			arc.setDrawStroke( stroke);
+		
+		scene.addRenderable( arc);
+
+		return arc;
 	}
 	
-	public void frame ( int delay)
+	public SArc drawArc ( double centerx, double centery, double radius1, double radius2, double startAngle, 
+							double stopAngle, boolean fill, boolean stroke, Color strokeColor, Color fillColor)
 	{
-		frame( delay, true);
+		SArc arc = drawOval( centerx, centery, radius1, radius2, fill, stroke, strokeColor, fillColor);
+		arc.setAngleStart( startAngle);
+		arc.setAngleStop( stopAngle);
+		
+		scene.addRenderable( arc);
+		
+		return arc;
+	}
+	
+	public SPolygon drawPolygon ( Point2D.Double[] points, boolean stroke, boolean fill, Color strokeColor, Color fillColor)
+	{
+		// boolean a = ((ScriptObjectMirror) points).isArray();
+		
+		// Point2D.Double[] pointData = ( Point2D.Double[]) ScriptUtils.convert( points, Point2D.Double[].class);
+		
+		SPolygon poly = new SPolygon( points);
+		poly.setDrawFill( fill);
+		poly.setDrawStroke( stroke);
+		
+		if ( stroke)
+			poly.setStrokeColor( strokeColor);
+		if ( fill)
+			poly.setStrokeColor( fillColor);
+		
+		scene.addRenderable( poly);
+		
+		return poly;
+	}
+	
+	///// GIF property control
+	
+	public void newFrame ( int delay, boolean clearScene)
+	{
+		scene.drawFrameTo( writer, delay, clearScene);		
+	}
+	
+	public void setGIFDimensions ( int width, int height)
+	{
+		writer.setDimensions( width, height);
+		scene.setHeight( height);
+		scene.setWidth( width);
+	}
+	
+	public void setBackgroundColor ( Color c)
+	{
+		scene.setBackgroundColor( c);
+	}
+	
+	public void addGIFComment ( String comment)
+	{
+		/// TODO
 	}
 	
 	///// internal helper functions
@@ -61,7 +138,7 @@ public class ScriptEnvironment {
 	{		
 		engine.getBindings( ScriptContext.ENGINE_SCOPE).put( "_gifscript_env", this);
 		
-		// run initialization script
+		// run initialization script, loaded from class resources
 		InputStream initScript = getClass().getResourceAsStream( "/res/scripts/gifscript_environment.js");
 		engine.eval( new InputStreamReader( initScript, "UTF-8"));		
 	}

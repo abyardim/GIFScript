@@ -9,7 +9,6 @@ import java.nio.file.Files;
 
 import javax.imageio.stream.FileImageOutputStream;
 import javax.imageio.stream.ImageOutputStream;
-import javax.script.ScriptException;
 
 public class Main {
 
