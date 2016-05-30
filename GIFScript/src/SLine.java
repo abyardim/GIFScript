@@ -1,7 +1,8 @@
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Point;
+import java.awt.Shape;
+import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 
 
@@ -60,6 +61,11 @@ public class SLine extends SGeometricPrimitive {
 			System.out.println( "Points: " + points[0] + points[1]);
 			g.drawLine( (int) points[0].x, (int) points[0].y, (int) points[1].x, (int) points[1].y);
 		}
+	}
+
+	@Override
+	public Shape getShape() {
+		return new Line2D.Double( points[0].x, points[0].y, points[1].x, points[1].y);
 	}
 
 

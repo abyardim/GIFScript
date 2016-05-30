@@ -26,7 +26,7 @@ public class Main {
 			String script = new String(encoded, StandardCharsets.UTF_8);
 			
 			interpreter = new ScriptInterpreter( script);
-		} catch (IOException e1) {
+		} catch ( IOException e1) {
 			// script file not found
 			e1.printStackTrace();
 			return;

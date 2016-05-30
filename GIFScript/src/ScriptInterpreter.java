@@ -1,19 +1,7 @@
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.geom.Point2D;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.ArrayList;
 
 import javax.imageio.IIOException;
-import javax.imageio.stream.FileImageOutputStream;
 import javax.imageio.stream.ImageOutputStream;
-import javax.script.ScriptContext;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
@@ -25,6 +13,8 @@ public class ScriptInterpreter {
 	private ScriptEngine engine;
 	private GIFWriter writer;
 	private AnimationScene scene;
+	
+	@SuppressWarnings("unused")
 	private ScriptEnvironment environment;
 	
 	public ScriptInterpreter ( String script)

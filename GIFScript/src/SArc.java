@@ -121,6 +121,12 @@ public class SArc extends SGeometricPrimitive {
 		Shape sStroke = transform.createTransformedShape( arc);
 		arc.setArcType( Arc2D.PIE);
 		Shape sFill = transform.createTransformedShape( arc);
+
+		if ( getDrawFill())
+		{
+			g.setColor( getFillColor());
+			g.fill( sFill);
+		}
 		
 		if ( getDrawStroke())
 		{
@@ -128,12 +134,23 @@ public class SArc extends SGeometricPrimitive {
 			g.setStroke( getStroke());
 			g.draw( sStroke);
 		}
+	}
+
+	@Override
+	public Shape getShape() {
+		double radius1 = getRadius1();
+		double radius2 = getRadius2();
 		
-		if ( getDrawFill())
-		{
-			g.setColor( getFillColor());
-			g.fill( sFill);
-		}
+		double rotationAngle = Math.atan2( ( points[1].y - points[0].y), ( points[1].x - points[0].x));
+		
+		Arc2D.Double arc = new Arc2D.Double( points[0].x - radius1, points[0].y - radius2, 
+												2 * radius1, 2 * radius2, Math.toDegrees( angleStart), Math.toDegrees( angleStop), Arc2D.OPEN);
+		
+		AffineTransform transform = new AffineTransform();
+		transform.rotate( rotationAngle, points[0].x, points[0].y);
+		Shape sStroke = transform.createTransformedShape( arc);			// TODO: chord / pie option?
+		
+		return sStroke;
 	}
 	
 }

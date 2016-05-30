@@ -1,11 +1,11 @@
 import java.awt.Color;
+import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.geom.Point2D;
-
 import java.awt.BasicStroke;
 
 
-public abstract class SGeometricPrimitive extends SceneObject {
+public abstract class SGeometricPrimitive extends SceneObject implements Sketchable {
 
 	public Point2D.Double[] points;
 	
@@ -28,6 +28,12 @@ public abstract class SGeometricPrimitive extends SceneObject {
 		stroke = new BasicStroke();
 	}
 	
+	//// abstract methods
+	
+	public abstract Shape getShape ();
+	
+	//// constructors
+	
 	public SGeometricPrimitive ( Point2D.Double[] points, boolean drawFill, boolean drawStroke, 
 									Color fillColor, Color strokeColor, Stroke stroke)
 	{
@@ -45,42 +51,52 @@ public abstract class SGeometricPrimitive extends SceneObject {
 	
 	////// getters/setters for visual properties
 	
+	@Override
 	public Stroke getStroke () {
 		return stroke;
 	}
 
+	@Override
 	public void setStroke ( Stroke stroke) {
 		this.stroke = stroke;
 	}
 
+	@Override
 	public boolean getDrawFill () {
 		return drawFill;
 	}
 
+	@Override
 	public void setDrawFill ( boolean drawFill) {
 		this.drawFill = drawFill;
 	}
 	
+	@Override
 	public boolean getDrawStroke () {
 		return drawStroke;
 	}
 
+	@Override
 	public void setDrawStroke ( boolean drawStroke) {
 		this.drawStroke = drawStroke;
 	}
 
+	@Override
 	public Color getFillColor () {
 		return fillColor;
 	}
 
+	@Override
 	public void setFillColor ( Color fillColor) {
 		this.fillColor = fillColor;
 	}
 
+	@Override
 	public Color getStrokeColor () {
 		return strokeColor;
 	}
 
+	@Override
 	public void setStrokeColor ( Color strokeColor) {
 		this.strokeColor = strokeColor;
 	}
@@ -89,12 +105,11 @@ public abstract class SGeometricPrimitive extends SceneObject {
 
 	// translate all points
 	@Override
-	public void translate(double dx, double dy) {
+	public void translate ( double dx, double dy) {
 		for ( Point2D.Double p : points)
 		{
 			p.x += dx;
 			p.y += dy;
-			
 		}
 		
 		this.setTransformCenter( this.getTransformCenter().x + dx, this.getTransformCenter().y + dy);
@@ -102,31 +117,42 @@ public abstract class SGeometricPrimitive extends SceneObject {
 
 	// rotate points around the center of the shape
 	@Override
-	public void rotate(double angle) {
+	public void rotate ( double angle) {
+
 		double centerx = this.getTransformCenter().x;
 		double centery = this.getTransformCenter().y;
 		
 		for ( Point2D.Double p : points)
 		{
-			p.x = centerx + ( p.x - centerx) * Math.cos( angle) - ( p.y - centery) * Math.sin( angle);
-			p.y = centery + ( p.x - centery) * Math.sin( angle) + ( p.y - centery) * Math.cos( angle);
+			Point2D.Double p2 = new Point2D.Double();
+			
+			p2.x = centerx + ( p.x - centerx) * Math.cos( -angle) - ( p.y - centery) * Math.sin( -angle);
+			p2.y = centery + ( p.x - centerx) * Math.sin( -angle) + ( p.y - centery) * Math.cos( -angle);
+			
+			p.x = p2.x;
+			p.y = p2.y;
 		}
 
 	}
 
 	// rotate the shape around a specified point
 	@Override
-	public void rotate(double angle, double centerx, double centery) {
+	public void rotate ( double angle, double centerx, double centery) {
 		
 		for ( Point2D.Double p : points)
 		{
-			p.x = centerx + ( p.x - centerx) * Math.cos( angle) - ( p.y - centery) * Math.sin( angle);
-			p.y = centery + ( p.x - centery) * Math.sin( angle) + ( p.y - centery) * Math.cos( angle);
+			Point2D.Double p2 = new Point2D.Double();
+			
+			p2.x = centerx + ( p.x - centerx) * Math.cos( -angle) - ( p.y - centery) * Math.sin( -angle);
+			p2.y = centery + ( p.x - centerx) * Math.sin( -angle) + ( p.y - centery) * Math.cos( -angle);
+			
+			p.x = p2.x;
+			p.y = p2.y;
 		}
 		
 		Point2D.Double c = this.getTransformCenter();
-		this.setTransformCenter( centerx + ( c.x - centerx) * Math.cos( angle) - ( c.y - centery) * Math.sin( angle),
-									centery + ( c.x - centery) * Math.sin( angle) + ( c.y - centery) * Math.cos( angle));
+		this.setLocation( centerx + ( c.x - centerx) * Math.cos( -angle) - ( c.y - centery) * Math.sin( -angle),
+							centery + ( c.x - centerx) * Math.sin( -angle) + ( c.y - centery) * Math.cos( -angle));
 	}
 	
 	// rotate shape around the origin

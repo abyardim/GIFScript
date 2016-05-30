@@ -1,8 +1,10 @@
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.stream.Stream;
+import java.util.Comparator;
+import java.util.stream.Collectors;
 
 public class AnimationScene {
 	private ArrayList<Renderable> scene;
@@ -40,6 +42,11 @@ public class AnimationScene {
 	{
 		scene.add( r);
 	}
+	
+	public void removeRenderable ( Renderable r)
+	{
+		scene = scene.stream().filter( x -> x != r).collect( Collectors.toCollection( ArrayList::new));
+	}
 
 	public  ArrayList<Renderable> getRenderables ( )
 	{
@@ -49,15 +56,20 @@ public class AnimationScene {
 	public void drawFrameTo ( GIFWriter writer, int frameTime, boolean clearScene)
 	{
 		BufferedImage newFrame = new BufferedImage( this.width, this.height, BufferedImage.TYPE_INT_ARGB);
+		
+		// initialize graphics context
 		Graphics2D g2d = newFrame.createGraphics();
+		g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g2d.setColor( backgroundColor);
 		g2d.fillRect( 0, 0, width, width);
 		
-		for ( Renderable o : scene)
-		{
-			if ( o.isVisible())
-				o.render( g2d);	
-		}
+		// order visible elements in their z ordering 
+		scene.stream().filter( Renderable::isVisible)
+						.sorted( Comparator.comparing( Renderable::getZ))
+						.forEach( r -> r.render(g2d) );
+		
+		// TODO: save sorted version for performance?
 		
 		writer.setDimensions( width, height);
 		writer.addFrame( new GIFFrame( frameCount, newFrame, frameTime));
