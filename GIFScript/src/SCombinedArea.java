@@ -30,15 +30,33 @@ public class SCombinedArea extends SGeometricPrimitive {
 			listAreas.add( new Subarea( AREA_ADD, o));
 	}
 	
-	public void add ( int type, SGeometricPrimitive o)
+	public void combine ( int type, SGeometricPrimitive o)
 	{
 		listAreas.add( new Subarea( type, o));
 	}
 	
-	public void add ( int type, SGeometricPrimitive ... objects)
+	public void combine ( int type, SGeometricPrimitive ... objects)
 	{
 		for ( SGeometricPrimitive o : objects)
 			listAreas.add( new Subarea( type, o));
+	}
+	
+	public void subtract ( SGeometricPrimitive ... objects )
+	{
+		for ( SGeometricPrimitive o : objects)
+			combine( AREA_SUBTRACT, o);
+	}
+	
+	public void intersect ( SGeometricPrimitive ... objects )
+	{
+		for ( SGeometricPrimitive o : objects)
+			combine( AREA_INTERSECT, o);
+	}
+	
+	public void xor ( SGeometricPrimitive ... objects )
+	{
+		for ( SGeometricPrimitive o : objects)
+			combine( AREA_XOR, o);
 	}
 	
 	public void remove ( SGeometricPrimitive obj)
