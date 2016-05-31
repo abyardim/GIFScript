@@ -1,6 +1,7 @@
 var Color = Java.type( "java.awt.Color");
 var Point2 = Java.type("java.awt.geom.Point2D.Double");
 var Stroke = Java.type( "java.awt.BasicStroke");
+var Font = Java.type( "java.awt.Font");
 
 // check if the Java interface object is loaded
 if ( typeof _gifscript_env == 'undefined') {
@@ -9,10 +10,18 @@ if ( typeof _gifscript_env == 'undefined') {
 
 // additional colors
 
-// additional strokes
+// default strokes
 STROKE_CURVED = new Stroke( 3.0, Stroke.CAP_ROUND, Stroke.JOIN_ROUND);
 STROKE_DEFAULT = new Stroke( 3.0, Stroke.CAP_BUTT, Stroke.JOIN_BEVEL);
 STROKE_THIN = new Stroke( 1.5, Stroke.CAP_BUTT, Stroke.JOIN_BEVEL);
+STROKE_DOTTED = new Stroke( 3, Stroke.CAP_BUTT, Stroke.JOIN_ROUND, 1,  Java.to( [1, 0.4, 1.5], "float[]"), 0);
+STROKE_DASHED = new Stroke( 3, Stroke.CAP_BUTT, Stroke.JOIN_ROUND, 10,  Java.to( [10], "float[]"), 0);
+
+// defualt fonts
+FONT_SMALL = new Font( "Georgia", Font.PLAIN, 20);
+FONT_BIG = new Font( "Georgia", Font.PLAIN, 65);
+FONT_MEDIUM = new Font( "Georgia", Font.PLAIN, 40);
+FONT_BOLD = new Font( "Arial Black", Font.BOLd, 60);
 
 //// GIF control
 
@@ -215,4 +224,20 @@ function group ( )
 {
     var args = (arguments.length === 1 ? [arguments[0]] : Array.apply(null, arguments));  // TODO: clean array allocation code
     return _gifscript_env.groupObjects( Java.to( args, "SceneObject[]"));
+}
+
+function write ( string, x, y, font)
+{
+    text = null;
+
+    if ( typeof font == "undefined")
+    {
+       text = _gifscript_env.drawText( string, x, y, FONT_MEDIUM);
+    }
+    else
+    {
+        text = _gifscript_env.drawText( string, x, y, font);
+    }
+
+    return text;
 }

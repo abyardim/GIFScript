@@ -21,7 +21,7 @@ public class Main {
     	
     	ScriptInterpreter interpreter;
 		try {
-			// load text from file
+			// load script from file
 			byte[] encoded = Files.readAllBytes( new File(args[0]).toPath());
 			String script = new String(encoded, StandardCharsets.UTF_8);
 			
@@ -32,7 +32,7 @@ public class Main {
 			return;
 		}
     	
-    	// run script from file
+    	// run script
 		ScriptError error = interpreter.runScript();
     	if ( error != null)
     	{

@@ -70,8 +70,6 @@ public class SCombinedArea extends SGeometricPrimitive {
 			remove( o);
 	}
 	
-	
-
 	@Override
 	public void render(Graphics2D g) {
 		Shape combinedShape = getShape( );

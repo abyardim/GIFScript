@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Stroke;
 import java.awt.geom.Point2D;
 import java.io.InputStream;
@@ -161,6 +162,17 @@ public class ScriptEnvironment {
 			scene.removeRenderable( g);
 		
 		return group;
+	}
+	
+	public SText drawText ( String text, double posx, double posy, Font font)
+	{
+		SText textElement = new SText ( text);
+		textElement.setFont( font);
+		textElement.setLocation( posx, posy);
+		
+		scene.addRenderable( textElement);
+		
+		return textElement;
 	}
 	
 	///// GIF property control
