@@ -2,6 +2,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Stroke;
 import java.awt.geom.Point2D;
+import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
@@ -15,11 +16,15 @@ public class ScriptEnvironment {
 	private GIFWriter writer;
 	private ScriptEngine engine;
 	
+	private ResourceManager res;
+	
 	public ScriptEnvironment ( AnimationScene scene, GIFWriter writer, ScriptEngine engine)
 	{
 		this.scene = scene;
 		this.writer = writer;
 		this.engine = engine;
+		
+		res = new ResourceManager();
 		
 		try {
 			buildDefaultEnvironment( );
@@ -175,11 +180,30 @@ public class ScriptEnvironment {
 		return textElement;
 	}
 	
+	public String loadImage ( String key, String name)
+	{
+		res.loadResource( key, new File( name));
+		
+		return key;
+	}
+	
+	public SImageFrame drawImage ( String key, double x, double y, double scale)
+	{
+		SImageFrame frame = new SImageFrame( res.getResource( key));
+		
+		frame.scale( scale);
+		frame.setLocation( x, y);
+		
+		scene.addRenderable( frame);
+		
+		return frame;
+	}
+	
 	///// GIF property control
 	
 	public void newFrame ( int delay, boolean clearScene)
 	{
-		scene.drawFrameTo( writer, delay, clearScene);		
+		scene.drawFrameTo( writer, delay, clearScene);
 	}
 	
 	public void setGIFDimensions ( int width, int height)
@@ -205,6 +229,11 @@ public class ScriptEnvironment {
 	}
 	
 	///// internal helper functions
+	
+	public AnimationScene getScene ( )
+	{
+		return scene;
+	}
 	
 	// load and map the functions/classes for use within scripts
 	private void buildDefaultEnvironment( ) throws ScriptException, UnsupportedEncodingException

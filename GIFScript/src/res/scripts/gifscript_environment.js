@@ -70,6 +70,14 @@ function circle ( centerx, centery, radius, strokeColor, fillColor, stroke)
     return c;
 }
 
+function dot ( x, y, col)
+{
+    if ( typeof col == "undefined")
+        col = Color.BLACK;
+
+    circle ( x, y, 3, col, col, false);
+}
+
 function line ( p1x, p1y, p2x, p2y, c) {
     if (typeof c !== "undefined") {
         return _gifscript_env.drawLine(p1x, p1y, p2x, p2y, c);
@@ -132,12 +140,12 @@ function polyPoints ( )
 }
 
 // rectangle
-function rectangle ( p1x, p1y, p2x, p2y, strokeColor, fillColor)
+function rectangle ( p1x, p1y, p2x, p2y, strokeColor, fillColor, stroke)
 {
     points = [ new Point2( p1x, p1y), new Point2( p1x, p2y), 
                 new Point2( p2x, p2y), new Point2( p2x, p1y)];
 
-    polygon1 = poly ( points, strokeColor, fillColor);
+    polygon1 = poly ( points, strokeColor, fillColor, stroke);
     polygon1.setStroke( STROKE_DEFAULT);
     polygon1.setTransformCenter( ( p1x + p2x) / 2, ( p1y + p2y) / 2);
 
@@ -240,4 +248,17 @@ function write ( string, x, y, font)
     }
 
     return text;
+}
+
+function load( file, key)
+{
+    return _gifscript_env.loadImage( key, file);
+}
+
+function drawImage( key, x, y, scale)
+{
+    if ( typeof scale == "undefined")
+        return _gifscript_env.drawImage( key, x, y, 1 );
+
+    return _gifscript_env.drawImage( key, x, y, scale );
 }

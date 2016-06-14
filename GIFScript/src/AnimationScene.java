@@ -88,7 +88,6 @@ public class AnimationScene {
 		// TODO: update logic for animated elements
 	}
 
-
 	//// getters / setters
 	
 	public int getWidth ( ) {

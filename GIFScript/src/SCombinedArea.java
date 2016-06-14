@@ -22,23 +22,33 @@ public class SCombinedArea extends SGeometricPrimitive {
 	public void add ( SGeometricPrimitive o)
 	{
 		listAreas.add( new Subarea( AREA_ADD, o));
+		
+		o.setVisible( false);
 	}
 	
 	public void add ( SGeometricPrimitive ... objects)
 	{
 		for ( SGeometricPrimitive o : objects)
+		{
 			listAreas.add( new Subarea( AREA_ADD, o));
+			o.setVisible( false);
+		}
 	}
 	
 	public void combine ( int type, SGeometricPrimitive o)
 	{
 		listAreas.add( new Subarea( type, o));
+		
+		o.setVisible( false);
 	}
 	
 	public void combine ( int type, SGeometricPrimitive ... objects)
 	{
 		for ( SGeometricPrimitive o : objects)
+		{
 			listAreas.add( new Subarea( type, o));
+			o.setVisible( false);
+		}
 	}
 	
 	public void subtract ( SGeometricPrimitive ... objects )

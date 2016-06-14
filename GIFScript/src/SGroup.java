@@ -138,7 +138,7 @@ public class SGroup extends SceneObject {
 		
 		for ( SceneObject o : elements)
 		{
-			o.setVisible( false);
+			o.setVisible( v);
 		}
 	}
 
