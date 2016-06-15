@@ -9,4 +9,5 @@ public interface Transformable {
 	public void setTransformCenter ( double x, double y);
 	public Point2D.Double getTransformCenter ( );
 	public void setLocation ( double x, double y);
+	
 }

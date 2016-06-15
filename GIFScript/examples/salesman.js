@@ -3,6 +3,8 @@ backgroundColor( Color.WHITE);
 
 load( "turkey.png", "turkey");
 
+_gifscript_env.clearTweens( null);
+
 drawImage( "turkey", 512, 250);
 
-frame( 12, false);
+frame( 20, false);

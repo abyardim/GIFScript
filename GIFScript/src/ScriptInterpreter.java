@@ -44,6 +44,11 @@ public class ScriptInterpreter {
 		{
 			return ScriptError.parseException( e);
 		}
+		catch ( Exception e)
+		{
+			e.printStackTrace();
+			return new ScriptError( e.getMessage(), -1, -1, "--"); // TODO: find a way to get the last line of the script
+		}
 	}
 	
 	public void writeGIF ( ImageOutputStream iout ) throws IIOException, IOException

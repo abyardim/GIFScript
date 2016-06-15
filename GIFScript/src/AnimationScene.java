@@ -4,10 +4,12 @@ import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.stream.Collectors;
 
 public class AnimationScene {
 	private ArrayList<Renderable> scene;
+	private ArrayList<Updateable> updateables;
 	private int width, height;
 	private Color backgroundColor;
 	private int frameCount;
@@ -16,6 +18,7 @@ public class AnimationScene {
 	{
 		width = height = 256;
 		scene = new ArrayList<Renderable>();
+		updateables = new ArrayList<>();
 		backgroundColor = Color.BLACK;
 		frameCount = 0;
 	}
@@ -25,6 +28,7 @@ public class AnimationScene {
 		this.width = width;
 		this.height = height;
 		scene = new ArrayList<Renderable>();
+		updateables = new ArrayList<>();
 		backgroundColor = background;
 		frameCount = 0;
 	}
@@ -34,6 +38,7 @@ public class AnimationScene {
 		this.width = width;
 		this.height = height;
 		scene = new ArrayList<Renderable>();
+		updateables = new ArrayList<>();
 		backgroundColor = Color.BLACK;
 		frameCount = 0;
 	}
@@ -83,9 +88,32 @@ public class AnimationScene {
 		}
 	}
 	
-	public void update ( )
+	public void addUpdateable ( Updateable r)
 	{
-		// TODO: update logic for animated elements
+		updateables.add( r);
+		
+		foldUpdateHierarchy ( );
+	}
+	
+	public void removeUpdateable ( Updateable r)
+	{
+		updateables = updateables.stream().filter( x -> x != r).collect( Collectors.toCollection( ArrayList::new));
+	}
+
+	public  ArrayList<Updateable> getUpdateables ( )
+	{
+		return updateables;
+	}
+	
+	public void update ( double dt)
+	{
+		foldUpdateHierarchy ( );
+		
+		// convert to secs
+		dt = dt / 1000;
+		
+		for ( Updateable u : updateables)
+			u.update( dt);
 	}
 
 	//// getters / setters
@@ -118,5 +146,29 @@ public class AnimationScene {
 		this.backgroundColor = backgroundColor;
 	}
 	
-
+	//// helpers
+	
+	// fold the update hierarchy to only include topmost elements
+	private void foldUpdateHierarchy ( )
+	{
+		
+		Iterator<Updateable> iter = updateables.iterator();
+		
+		while ( iter.hasNext())
+		{
+			Updateable u1 = iter.next();
+			boolean remove = false;
+			
+			for ( Updateable u2 : updateables)
+			{
+				if ( u1.isChildOf( u2))
+					remove = true;
+			}
+			
+			if ( remove)
+				iter.remove();
+		}
+		
+		updateables = updateables.stream().distinct().collect( Collectors.toCollection(ArrayList::new));
+	}
 }

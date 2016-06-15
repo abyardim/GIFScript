@@ -6,6 +6,10 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.function.DoubleConsumer;
+import java.util.stream.Collectors;
 
 import javax.script.ScriptContext;
 import javax.script.ScriptEngine;
@@ -199,10 +203,75 @@ public class ScriptEnvironment {
 		return frame;
 	}
 	
+	public void registerNotifier ( DoubleConsumer observer)
+	{
+		scene.addUpdateable( new FrameNotifier( observer));
+	}
+	
+	public void applyTween ( ValueGenerator generator, SceneObject o, String property)
+	{
+		TweenUpdater tween = new TweenUpdater( o, generator, property);
+		
+		clearTween( o, property);
+		
+		scene.addUpdateable( tween);
+		scene.addUpdateable( generator);
+	}
+	
+	public void clearTweens ( SceneObject o)
+	{
+		ArrayList<Updateable> l = scene.getUpdateables();
+		
+		Iterator<Updateable> iter = l.iterator();
+
+		while (iter.hasNext()) {
+			Updateable u = iter.next();
+
+			if ( u instanceof TweenUpdater && ((TweenUpdater) u).getObject() == o)
+		        iter.remove();
+		}
+	}
+	
+	public void clearTween ( SceneObject o, String property)
+	{
+		ArrayList<Updateable> l = scene.getUpdateables();
+
+		Iterator<Updateable> iter = l.iterator();
+
+		while (iter.hasNext()) {
+			Updateable u = iter.next();
+
+			if ( u instanceof TweenUpdater && ((TweenUpdater) u).getObject() == o && ((TweenUpdater) u).getPropertyID().equals( property))
+		        iter.remove();
+		}
+	}
+	
+	public LinearInterval generateFiniteInterval( double start, double end, double speed)
+	{
+		LinearInterval interval = new LinearInterval ( start, end, speed);
+		scene.addUpdateable( interval);
+		
+		return interval;
+	}
+	
+	public LinearInterval generateInfiniteInterval( double start, boolean positiveInf, double speed)
+	{
+		LinearInterval interval = new LinearInterval ( start, speed, positiveInf);
+		scene.addUpdateable( interval);
+		
+		return interval;
+	}
+	
+	public void updateScene ( double ms)
+	{
+		scene.update( ms);
+	}
+	
 	///// GIF property control
 	
 	public void newFrame ( int delay, boolean clearScene)
 	{
+		scene.update( delay);
 		scene.drawFrameTo( writer, delay, clearScene);
 	}
 	
@@ -229,11 +298,6 @@ public class ScriptEnvironment {
 	}
 	
 	///// internal helper functions
-	
-	public AnimationScene getScene ( )
-	{
-		return scene;
-	}
 	
 	// load and map the functions/classes for use within scripts
 	private void buildDefaultEnvironment( ) throws ScriptException, UnsupportedEncodingException

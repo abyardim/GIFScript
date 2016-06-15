@@ -75,7 +75,7 @@ function dot ( x, y, col)
     if ( typeof col == "undefined")
         col = Color.BLACK;
 
-    circle ( x, y, 3, col, col, false);
+    return circle ( x, y, 3, col, col, false);
 }
 
 function line ( p1x, p1y, p2x, p2y, c) {
@@ -261,4 +261,34 @@ function drawImage( key, x, y, scale)
         return _gifscript_env.drawImage( key, x, y, 1 );
 
     return _gifscript_env.drawImage( key, x, y, scale );
+}
+
+function interval ( start, end, speed)
+{
+    if ( end == Infinity)
+        return _gifscript_env.generateInfiniteInterval( start, true,  speed);
+    else if ( end == -Infinity)
+        return _gifscript_env.generateInfiniteInterval( start, false,  speed);
+    
+    return _gifscript_env.generateInfiniteInterval( start, end,  speed);
+}
+
+function apply ( gen, target, property)
+{
+    _gifscript_env.applyTween( gen, target, property);
+}
+
+function clearAnimations ( target)
+{
+    _gifscript_env.clearTweens( target);
+}
+
+function clearAnimation ( target, property)
+{
+    _gifscript_env.clearTweens( target, property);
+}
+
+function update ( dt)
+{
+    _gifscript_env.updateScene( dt);
 }
