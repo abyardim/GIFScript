@@ -5,8 +5,8 @@ bezier2( 250, 250, 510, 258, 250, 500).setStrokeColor( Color.CYAN);
 bezier3( 250, 250, 270, 230, 480, 230, 500, 250).setStrokeColor( Color.BLUE);
 
 r = rectangle( 200, 200, 400, 400);
-r.setStrokeColor( Color.CYAN);
-r.setFillColor( Color.BLUE);
+r.setStrokeColor( Colors.Almond);
+r.setFillColor( Colors.DarkElectricBlue);
 r.setStroke(STROKE_DASHED);
 
 r2 = rectangle( 160, 360, 240, 440);
@@ -17,7 +17,7 @@ g2.setTransformCenter( r.getTransformCenter().x, r.getTransformCenter().y);
 
 c1 = circle( 100, 100, 50);
 c2 = circle( 100, 200, 50);
-c1.setStrokeColor( Color.RED);
+c1.setStrokeColor( Colors.DarkKhaki);
 c2.setStrokeColor( Color.BLUE);
 
 g = group( c1, c2);

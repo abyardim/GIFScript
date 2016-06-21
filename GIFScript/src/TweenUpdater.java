@@ -3,7 +3,7 @@ import java.awt.geom.Point2D;
 
 
 // responisble for coyping a generated value to a property
-public class TweenUpdater implements Updateable {
+public class TweenUpdater extends Updateable {
 
 	private SceneObject target;
 	private ValueGenerator generator;
@@ -11,8 +11,10 @@ public class TweenUpdater implements Updateable {
 	
 	private double lastValue = 0;
 	
-	public TweenUpdater ( SceneObject target, ValueGenerator generator, String property)
+	public TweenUpdater ( UpdateManager manager, SceneObject target, ValueGenerator generator, String property)
 	{
+		super( manager);
+		
 		this.target = target;
 		this.generator = generator;
 		this.property = property;
@@ -20,6 +22,9 @@ public class TweenUpdater implements Updateable {
 	
 	@Override
 	public void update ( double dt) {
+		
+		if ( !isRunning())
+			return;
 		
 		Sketchable sketch = (Sketchable) target;
 		

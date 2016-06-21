@@ -9,8 +9,10 @@ public class LinearInterval extends ValueGenerator<Double> {
 	private double timeElapsed;
 	private final double duration;
 	
-	public LinearInterval ( double start, double end, double speed)
+	public LinearInterval ( UpdateManager manager, double start, double end, double speed)
 	{
+		super( manager);
+		
 		toInfinity = false;
 		this.end = end;
 		this.speed = speed;
@@ -23,8 +25,10 @@ public class LinearInterval extends ValueGenerator<Double> {
 		duration = Math.abs( ( start - end) / speed);
 	}
 	
-	public LinearInterval ( double start, double speed, boolean positive)
+	public LinearInterval ( UpdateManager manager, double start, double speed, boolean positive)
 	{
+		super( manager);
+		
 		toInfinity = true;
 		positiveDirection = positive;
 		this.speed = speed;
@@ -39,6 +43,9 @@ public class LinearInterval extends ValueGenerator<Double> {
 	
 	@Override
 	public void update ( double dt) {
+		if ( !isRunning())
+			return;
+		
 		timeElapsed += dt;
 		
 		if ( !toInfinity && timeElapsed >= duration && getRepetition())
@@ -67,7 +74,7 @@ public class LinearInterval extends ValueGenerator<Double> {
 		{
 			return start + speed * timeElapsed;
 		}
-		else{ // negative direction
+		else{	// negative direction
 			return start - speed * timeElapsed;
 		}
 	}

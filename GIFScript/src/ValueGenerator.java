@@ -1,7 +1,10 @@
 import java.util.function.Function;
 
-public abstract class ValueGenerator<T> implements Updateable {
+public abstract class ValueGenerator<T> extends Updateable {
 	
+	public ValueGenerator ( UpdateManager manager) {
+		super(manager);
+	}
 	public abstract void revert ( double dt );
 	public abstract boolean isComplete ( );
 	public abstract void reset ( );
@@ -9,7 +12,7 @@ public abstract class ValueGenerator<T> implements Updateable {
 
 	public <S> ValueGenerator<S> map ( Function<T,S> f)
 	{
-		return new Mapper<T,S>( this, f);
+		return new Mapper<T,S>( this.getManager(), this, f);
 	}
 	
 	private boolean repetitions;
@@ -23,4 +26,5 @@ public abstract class ValueGenerator<T> implements Updateable {
 	{
 		repetitions = b;
 	}
+	
 }

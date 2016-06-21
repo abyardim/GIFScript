@@ -5,14 +5,19 @@ public class Mapper<S,T> extends ValueGenerator<T> {
 	private Function<S,T> map;
 	private ValueGenerator<S> generator;
 	
-	public Mapper ( ValueGenerator<S> source, Function<S,T> f)
+	public Mapper ( UpdateManager manager, ValueGenerator<S> source, Function<S,T> f)
 	{
+		super( manager);
+		
 		map = f;
 		generator = source;
 	}
 	
 	@Override
 	public void update( double dt) {
+		if ( !isRunning())
+			return;
+		
 		generator.update( dt);
 	}
 

@@ -205,12 +205,12 @@ public class ScriptEnvironment {
 	
 	public void registerNotifier ( DoubleConsumer observer)
 	{
-		scene.addUpdateable( new FrameNotifier( observer));
+		scene.addUpdateable( new FrameNotifier( scene, observer));
 	}
 	
 	public void applyTween ( ValueGenerator generator, SceneObject o, String property)
 	{
-		TweenUpdater tween = new TweenUpdater( o, generator, property);
+		TweenUpdater tween = new TweenUpdater( scene, o, generator, property);
 		
 		clearTween( o, property);
 		
@@ -248,7 +248,7 @@ public class ScriptEnvironment {
 	
 	public LinearInterval generateFiniteInterval( double start, double end, double speed)
 	{
-		LinearInterval interval = new LinearInterval ( start, end, speed);
+		LinearInterval interval = new LinearInterval ( scene, start, end, speed);
 		scene.addUpdateable( interval);
 		
 		return interval;
@@ -256,7 +256,7 @@ public class ScriptEnvironment {
 	
 	public LinearInterval generateInfiniteInterval( double start, boolean positiveInf, double speed)
 	{
-		LinearInterval interval = new LinearInterval ( start, speed, positiveInf);
+		LinearInterval interval = new LinearInterval ( scene, start, speed, positiveInf);
 		scene.addUpdateable( interval);
 		
 		return interval;
@@ -305,8 +305,12 @@ public class ScriptEnvironment {
 		// bind the environment variable
 		engine.getBindings( ScriptContext.ENGINE_SCOPE).put( "_gifscript_env", this);
 		
+		// load constants script
+		InputStream initScript = getClass().getResourceAsStream( "/res/scripts/script_constants.js");
+		engine.eval( new InputStreamReader( initScript, "UTF-8"));	
+		
 		// run initialization script
-		InputStream initScript = getClass().getResourceAsStream( "/res/scripts/gifscript_environment.js");
+		initScript = getClass().getResourceAsStream( "/res/scripts/gifscript_environment.js");
 		engine.eval( new InputStreamReader( initScript, "UTF-8"));		
 	}
 }

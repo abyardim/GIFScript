@@ -17,7 +17,7 @@ yvals = yvals.map( function(t) 150 + scale * t);
 apply( xvals, pen, "p.x");
 apply( yvals, pen, "p.y");
 
-for ( i = 0; i < 100; i++)
+for ( i = 0; i < 600; i++)
 {
     frame( 20, false);
     lseq.add( pen.getTransformCenter());

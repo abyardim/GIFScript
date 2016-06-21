@@ -7,7 +7,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.stream.Collectors;
 
-public class AnimationScene {
+public class AnimationScene implements UpdateManager {
 	private ArrayList<Renderable> scene;
 	private ArrayList<Updateable> updateables;
 	private int width, height;
