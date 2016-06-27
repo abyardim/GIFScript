@@ -1,4 +1,10 @@
 
+/* Copyright (c) 2016 Ali Batuhan Yardim                                 */
+/* This work is available under the MIT License.                         */
+/* Please see the file LICENSE in this distribution for license details. */
+
+/* GIFScript demo, runs a TSP solver based on a genetic algorithm  */
+/* to all 81 provinces of Turkey */
 
 ////////////////// genetic algorithm from https://github.com/parano/GeneticAlgorithm-TSP
 
