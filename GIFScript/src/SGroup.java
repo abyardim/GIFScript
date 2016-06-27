@@ -1,3 +1,10 @@
+
+/* Copyright (c) 2016 Ali Batuhan Yardim                                 */
+/* This work is available under the MIT License.                         */
+/* Please see the file LICENSE in this distribution for license details. */
+
+/* A grouped set oj SceneObjects transformed together */
+
 import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;

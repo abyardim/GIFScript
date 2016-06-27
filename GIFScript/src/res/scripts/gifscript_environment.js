@@ -1,4 +1,11 @@
 
+/* Copyright (c) 2016 Ali Batuhan Yardim                                 */
+/* This work is available under the MIT License.                         */
+/* Please see the file LICENSE in this distribution for license details. */
+
+/* Startup script, defining default GIFScript functions                  */
+
+
 // check if the Java interface object is loaded
 if ( typeof _gifscript_env == 'undefined') {
     throw new Error( "_gifscript_env not loaded.");

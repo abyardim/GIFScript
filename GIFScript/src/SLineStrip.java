@@ -1,3 +1,10 @@
+
+/* Copyright (c) 2016 Ali Batuhan Yardim                                 */
+/* This work is available under the MIT License.                         */
+/* Please see the file LICENSE in this distribution for license details. */
+
+/* A list of successive points to draw a strip of lines, used by the script  */
+
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.Path2D;

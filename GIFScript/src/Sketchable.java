@@ -1,6 +1,12 @@
+
+/* Copyright (c) 2016 Ali Batuhan Yardim                                 */
+/* This work is available under the MIT License.                         */
+/* Please see the file LICENSE in this distribution for license details. */
+
+/* An interface for an object renderable with a stroke and/or fill*/
+
 import java.awt.Color;
 import java.awt.Stroke;
-
 
 public interface Sketchable {
 	public Stroke getStroke ();

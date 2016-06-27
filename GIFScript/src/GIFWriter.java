@@ -1,4 +1,10 @@
 
+/* Copyright (c) 2016 Ali Batuhan Yardim                                 */
+/* This work is available under the MIT License.                         */
+/* Please see the file LICENSE in this distribution for license details. */
+
+/* A class for encoding GIFs to files, uses the default Java ImageWriter */
+
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;

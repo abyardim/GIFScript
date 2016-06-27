@@ -1,5 +1,10 @@
-import javax.script.ScriptException;
+/* Copyright (c) 2016 Ali Batuhan Yardim                                 */
+/* This work is available under the MIT License.                         */
+/* Please see the file LICENSE in this distribution for license details. */
 
+/* Represents a interpreter error encountered by GIFScript */
+
+import javax.script.ScriptException;
 
 public class ScriptError {
 	private String message;

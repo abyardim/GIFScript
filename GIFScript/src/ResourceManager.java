@@ -1,10 +1,16 @@
+
+/* Copyright (c) 2016 Ali Batuhan Yardim                                 */
+/* This work is available under the MIT License.                         */
+/* Please see the file LICENSE in this distribution for license details. */
+
+/* A manager for external file resources to be accessed by scripts */
+
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 
 import javax.imageio.ImageIO;
-
 
 public class ResourceManager {
 	private HashMap<String, BufferedImage> loadedImages;

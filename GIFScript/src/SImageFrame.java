@@ -1,8 +1,14 @@
+
+/* Copyright (c) 2016 Ali Batuhan Yardim                                 */
+/* This work is available under the MIT License.                         */
+/* Please see the file LICENSE in this distribution for license details. */
+
+/* Renders a loaded image resource in a transformed rectangle on the scene */
+
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
-
 
 public class SImageFrame extends SceneObject {
 	

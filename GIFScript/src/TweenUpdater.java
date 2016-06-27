@@ -1,8 +1,14 @@
+
+/* Copyright (c) 2016 Ali Batuhan Yardim                                 */
+/* This work is available under the MIT License.                         */
+/* Please see the file LICENSE in this distribution for license details. */
+
+/* Applies the value taken from a ValueGenerator to an object on the scene */
+/* as a tween, updating each frame */
+
 import java.awt.Color;
 import java.awt.geom.Point2D;
 
-
-// responisble for coyping a generated value to a property
 public class TweenUpdater extends Updateable {
 
 	private SceneObject target;

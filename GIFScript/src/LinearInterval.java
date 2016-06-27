@@ -1,5 +1,9 @@
-import java.util.function.Function;
 
+/* Copyright (c) 2016 Ali Batuhan Yardim                                 */
+/* This work is available under the MIT License.                         */
+/* Please see the file LICENSE in this distribution for license details. */
+
+/* Implementation of linear value generator for tweened properties       */
 
 public class LinearInterval extends ValueGenerator<Double> {
 

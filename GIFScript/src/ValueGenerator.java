@@ -1,3 +1,10 @@
+
+/* Copyright (c) 2016 Ali Batuhan Yardim                                 */
+/* This work is available under the MIT License.                         */
+/* Please see the file LICENSE in this distribution for license details. */
+
+/* Abstract representation for a */
+
 import java.util.function.Function;
 
 public abstract class ValueGenerator<T> extends Updateable {

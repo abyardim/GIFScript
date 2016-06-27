@@ -1,9 +1,15 @@
+
+/* Copyright (c) 2016 Ali Batuhan Yardim                                 */
+/* This work is available under the MIT License.                         */
+/* Please see the file LICENSE in this distribution for license details. */
+
+/* Abstract representation of a geometric primitive rendered to the scene */
+
 import java.awt.Color;
 import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.geom.Point2D;
 import java.awt.BasicStroke;
-
 
 public abstract class SGeometricPrimitive extends SceneObject implements Sketchable {
 

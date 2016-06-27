@@ -1,6 +1,11 @@
-//
-//import jdk.nashorn.api.scripting.ClassFilter;
-//import jdk.nashorn.api.scripting.NashornScriptEngineFactory;
+
+/* Copyright (c) 2016 Ali Batuhan Yardim                                 */
+/* This work is available under the MIT License.                         */
+/* Please see the file LICENSE in this distribution for license details. */
+
+/* Program entry point */
+/* Accepts the script path and the image export path as command line     */
+/* parameters */
 
 import java.io.File;
 import java.io.IOException;

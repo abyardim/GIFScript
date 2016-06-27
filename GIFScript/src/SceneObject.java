@@ -1,5 +1,11 @@
-import java.awt.geom.Point2D;
 
+/* Copyright (c) 2016 Ali Batuhan Yardim                                 */
+/* This work is available under the MIT License.                         */
+/* Please see the file LICENSE in this distribution for license details. */
+
+/* An abstract representation for a visible object on the scene  */
+
+import java.awt.geom.Point2D;
 
 public abstract class SceneObject implements Renderable, Transformable, Scaleable {
 	private boolean visible = true;

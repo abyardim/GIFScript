@@ -1,3 +1,10 @@
+
+/* Copyright (c) 2016 Ali Batuhan Yardim                                 */
+/* This work is available under the MIT License.                         */
+/* Please see the file LICENSE in this distribution for license details. */
+
+/* GIFScript demo, shows text processing capabilities */
+
 backgroundColor( Color.WHITE);
 
 t1 = write( "hello", 0, 0);

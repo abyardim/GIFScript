@@ -1,5 +1,11 @@
-import java.awt.geom.Point2D;
 
+/* Copyright (c) 2016 Ali Batuhan Yardim                                 */
+/* This work is available under the MIT License.                         */
+/* Please see the file LICENSE in this distribution for license details. */
+
+/* An interface for any object on the scene which canbe transformed */
+
+import java.awt.geom.Point2D;
 
 public interface Transformable {
 	public void translate ( double dx, double dy);

@@ -1,3 +1,10 @@
+
+/* Copyright (c) 2016 Ali Batuhan Yardim                                 */
+/* This work is available under the MIT License.                         */
+/* Please see the file LICENSE in this distribution for license details. */
+
+/* Executes a GIFScript, reports any errors */
+
 import java.io.IOException;
 
 import javax.imageio.IIOException;

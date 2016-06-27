@@ -1,3 +1,11 @@
+
+/* Copyright (c) 2016 Ali Batuhan Yardim                                 */
+/* This work is available under the MIT License.                         */
+/* Please see the file LICENSE in this distribution for license details. */
+
+/* Initialization script for loading GIFScript constants to the          */
+/* Nashorn environment                                                   */
+
 var Color = Java.type( "java.awt.Color");
 var Point2 = Java.type("java.awt.geom.Point2D.Double");
 var Stroke = Java.type( "java.awt.BasicStroke");

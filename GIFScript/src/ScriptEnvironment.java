@@ -1,3 +1,11 @@
+
+/* Copyright (c) 2016 Ali Batuhan Yardim                                 */
+/* This work is available under the MIT License.                         */
+/* Please see the file LICENSE in this distribution for license details. */
+
+/* Sets up a Nashorn instance and initializes GIFScript methods, classes */
+/* and constants for use within the script */
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Stroke;
@@ -9,7 +17,6 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.function.DoubleConsumer;
-import java.util.stream.Collectors;
 
 import javax.script.ScriptContext;
 import javax.script.ScriptEngine;

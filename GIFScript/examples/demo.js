@@ -1,3 +1,11 @@
+
+/* Copyright (c) 2016 Ali Batuhan Yardim                                 */
+/* This work is available under the MIT License.                         */
+/* Please see the file LICENSE in this distribution for license details. */
+
+/* GIFScript test, checks functioning of a many GIFScript classes */
+/* To be removed */
+
 setDim( 512, 512);
 backgroundColor( Color.BLACK);
 
