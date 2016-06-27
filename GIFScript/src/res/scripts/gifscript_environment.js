@@ -58,12 +58,15 @@ function circle ( centerx, centery, radius, strokeColor, fillColor, stroke)
     return c;
 }
 
-function dot ( x, y, col)
+function dot ( x, y, col, radius)
 {
     if ( typeof col == "undefined")
         col = Color.BLACK;
 
-    return circle ( x, y, 3, col, col, false);
+    if ( typeof radius == "undefined")
+        r = 5;
+
+    return circle ( x, y, r, col, col, false);
 }
 
 function line ( p1x, p1y, p2x, p2y, c) {

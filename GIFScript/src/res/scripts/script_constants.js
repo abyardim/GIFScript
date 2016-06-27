@@ -894,5 +894,5 @@ STROKE_DASHED = new Stroke( 3, Stroke.CAP_BUTT, Stroke.JOIN_ROUND, 10,  Java.to(
 // defualt fonts
 FONT_SMALL = new Font( "Georgia", Font.PLAIN, 20);
 FONT_BIG = new Font( "Georgia", Font.PLAIN, 65);
-FONT_MEDIUM = new Font( "Georgia", Font.PLAIN, 40);
+FONT_MEDIUM = new Font( "Georgia", Font.PLAIN, 32);
 FONT_BOLD = new Font( "Arial Black", Font.BOLd, 60);
