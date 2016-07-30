@@ -21,6 +21,8 @@ public class ScriptInterpreter {
 	private GIFWriter writer;
 	private AnimationScene scene;
 	
+	// GIFScript ScriptEnvironment object 
+	// to be accessed by Nashorn, not used directly
 	@SuppressWarnings("unused")
 	private ScriptEnvironment environment;
 	
@@ -41,20 +43,27 @@ public class ScriptInterpreter {
 		
 		environment = new ScriptEnvironment( scene, writer, engine);
 		
+		int lastLine = 1;
+		String[] scriptLines = script.split( "\n");
+		
 		// execute the script
 		try {
-			engine.eval( script);
+			while( lastLine <= scriptLines.length)
+			{
+				engine.eval( scriptLines[lastLine - 1]);
+				lastLine++;				
+			}
 			
 			// successful
 			return null;
 		} catch ( ScriptException e)
 		{
-			return ScriptError.parseException( e);
+			return ScriptError.parseScriptException( e, lastLine, "gif-script");
 		}
 		catch ( Exception e)
 		{
-			e.printStackTrace();
-			return new ScriptError( e.getMessage(), -1, -1, "--"); // TODO: find a way to get the last line of the script
+			// e.printStackTrace();
+			return ScriptError.parseException( e, lastLine, "gif-script");
 		}
 	}
 	

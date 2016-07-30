@@ -55,15 +55,31 @@ public class ScriptError {
 	public String toString ( )
 	{
 		if ( columnNumber < 0)
-			return "Error @" + lineNumber + " : " + fileDetails + " : " + message;
+			return "Error @Line " + lineNumber + ": " + message;
 		
-		return "Error @( " + lineNumber + ", " + columnNumber + ") : " + fileDetails + " : " + message;
+		return "Error @Line " + lineNumber + ", Column " + columnNumber + ": " + message;
 	}
 	
-	public static ScriptError parseException ( ScriptException e)
+	public static ScriptError parseScriptException ( ScriptException e)
+	{
+		String errorMessage = e.getMessage().replace( "<eval>", "script");
+		
+		return new ScriptError( e.getMessage(), e.getLineNumber(), e.getColumnNumber(), e.getFileName());
+	}
+	
+	public static ScriptError parseScriptException ( ScriptException e, int lineNo, String fileName)
+	{
+		String errorMessage = e.getMessage().replace( "line number 1", "line number " + lineNo);
+		errorMessage = errorMessage.replace( "line 1", "line " + lineNo);
+		errorMessage = errorMessage.replace( "<eval>", "script");
+		
+		return new ScriptError( errorMessage, lineNo, e.getColumnNumber(), fileName);
+	}
+	
+	public static ScriptError parseException ( Exception e, int lineNo, String fileName)
 	{
 		// TODO: map Nashorn error messages to be more meaningful in GIFScript's context
 		
-		return new ScriptError( e.getMessage(), e.getLineNumber(), e.getColumnNumber(), e.getFileName());
+		return new ScriptError( e.getMessage(), lineNo, -1, fileName);
 	}
 }

@@ -32,8 +32,6 @@ public class SLine extends SGeometricPrimitive {
 				Color.WHITE,
 				c,
 				new BasicStroke());
-		
-		System.out.println( "Color: " + c);
 	}
 	
 	//// getters / setters for line properties
@@ -64,7 +62,6 @@ public class SLine extends SGeometricPrimitive {
 		{
 			g.setColor( getStrokeColor());
 			g.setStroke( getStroke());
-			System.out.println( "Points: " + points[0] + points[1]);
 			g.drawLine( (int) points[0].x, (int) points[0].y, (int) points[1].x, (int) points[1].y);
 		}
 	}
@@ -72,10 +69,5 @@ public class SLine extends SGeometricPrimitive {
 	@Override
 	public Shape getShape() {
 		return new Line2D.Double( points[0].x, points[0].y, points[1].x, points[1].y);
-	}
-
-
-
-
-	
+	}	
 }
