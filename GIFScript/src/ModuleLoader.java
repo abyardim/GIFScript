@@ -4,7 +4,7 @@
 /* Please see the file LICENSE in this distribution for license details. */
 
 /* An utility class for loading the contents of a GIFScript module into  */
-/* the current environment    */
+/* a GIFScript environment current environment    */
 
 import java.io.BufferedReader;
 import java.io.File;

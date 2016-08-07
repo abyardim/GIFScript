@@ -1,4 +1,10 @@
 
+/* Copyright (c) 2016 Ali Batuhan Yardim                                 */
+/* This work is available under the MIT License.                         */
+/* Please see the file LICENSE in this distribution for license details. */
+
+/* Exception: GIFScript failed to find a requested in-module resource    */
+
 public class GifScriptModuleResourceNotFoundException extends
 		GifScriptModuleException {
 
