@@ -12,12 +12,13 @@ import java.awt.geom.Point2D;
 public class TweenUpdater extends Updateable {
 
 	private SceneObject target;
+	@SuppressWarnings("rawtypes")
 	private ValueGenerator generator;
 	private String property;
 	
 	private double lastValue = 0;
 	
-	public TweenUpdater ( UpdateManager manager, SceneObject target, ValueGenerator generator, String property)
+	public TweenUpdater ( UpdateManager manager, SceneObject target, @SuppressWarnings("rawtypes") ValueGenerator generator, String property)
 	{
 		super( manager);
 		

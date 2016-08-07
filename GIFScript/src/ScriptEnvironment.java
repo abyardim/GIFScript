@@ -216,7 +216,7 @@ public class ScriptEnvironment {
 		scene.addUpdateable( new FrameNotifier( scene, observer));
 	}
 	
-	public void applyTween ( ValueGenerator generator, SceneObject o, String property)
+	public void applyTween ( @SuppressWarnings("rawtypes") ValueGenerator generator, SceneObject o, String property)
 	{
 		TweenUpdater tween = new TweenUpdater( scene, o, generator, property);
 		

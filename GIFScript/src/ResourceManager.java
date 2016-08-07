@@ -44,7 +44,6 @@ public class ResourceManager {
 			img = ImageIO.read(in);
 		}
 
-		
 		if ( img == null)
 			return false;
 		
