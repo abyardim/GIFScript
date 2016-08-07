@@ -43,27 +43,19 @@ public class ScriptInterpreter {
 		
 		environment = new ScriptEnvironment( scene, writer, engine);
 		
-		int lastLine = 1;
-		String[] scriptLines = script.split( "\n");
-		
 		// execute the script
 		try {
-			while( lastLine <= scriptLines.length)
-			{
-				engine.eval( scriptLines[lastLine - 1]);
-				lastLine++;				
-			}
+			engine.eval( script);
 			
 			// successful
 			return null;
 		} catch ( ScriptException e)
 		{
-			return ScriptError.parseScriptException( e, lastLine, "gif-script");
+			return ScriptError.parseScriptException( e, "script");
 		}
 		catch ( Exception e)
 		{
-			// e.printStackTrace();
-			return ScriptError.parseException( e, lastLine, "gif-script");
+			return ScriptError.parseException( e, "script");
 		}
 	}
 	

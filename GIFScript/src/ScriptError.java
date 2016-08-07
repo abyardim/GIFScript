@@ -5,6 +5,7 @@
 /* Represents a interpreter error encountered by GIFScript */
 
 import javax.script.ScriptException;
+import jdk.nashorn.api.scripting.NashornException;
 
 public class ScriptError {
 	private String message;
@@ -64,22 +65,21 @@ public class ScriptError {
 	{
 		String errorMessage = e.getMessage().replace( "<eval>", "script");
 		
-		return new ScriptError( e.getMessage(), e.getLineNumber(), e.getColumnNumber(), e.getFileName());
+		return new ScriptError( errorMessage, e.getLineNumber(), e.getColumnNumber(), e.getFileName());
 	}
 	
-	public static ScriptError parseScriptException ( ScriptException e, int lineNo, String fileName)
+	public static ScriptError parseScriptException ( ScriptException e, String fileName)
 	{
-		String errorMessage = e.getMessage().replace( "line number 1", "line number " + lineNo);
-		errorMessage = errorMessage.replace( "line 1", "line " + lineNo);
-		errorMessage = errorMessage.replace( "<eval>", "script");
+		String errorMessage = e.getMessage().replace( "<eval>", fileName);
 		
-		return new ScriptError( errorMessage, lineNo, e.getColumnNumber(), fileName);
+		return new ScriptError( errorMessage, e.getLineNumber(), e.getColumnNumber(), fileName);
 	}
 	
-	public static ScriptError parseException ( Exception e, int lineNo, String fileName)
+	public static ScriptError parseException ( Exception e, String fileName)
 	{
 		// TODO: map Nashorn error messages to be more meaningful in GIFScript's context
+		StackTraceElement[] stackElement = NashornException.getScriptFrames(e);
 		
-		return new ScriptError( e.getMessage(), lineNo, -1, fileName);
+		return new ScriptError( e.getMessage(), stackElement[0].getLineNumber(), -1, fileName);
 	}
 }
