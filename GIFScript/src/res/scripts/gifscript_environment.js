@@ -36,7 +36,7 @@ function setDim ( width, height)
 {
     _gifscript_env.setGIFDimensions( width, height);
 }
-
+   
 function backgroundColor ( c)
 {
     _gifscript_env.setBackgroundColor( c);
