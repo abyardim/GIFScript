@@ -33,7 +33,7 @@ public class Main {
     		try {
     			// export the GIFScript module
 				packer.write();
-			} catch ( ModuleNameUndefinedException e) {
+			} catch ( GifScriptModuleNameUndefinedException e) {
 				System.out.println( "Module has no name specified.");
 			}
     		catch ( FileNotFoundException e)

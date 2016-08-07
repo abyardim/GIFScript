@@ -55,6 +55,9 @@ public class ScriptError {
 	@Override
 	public String toString ( )
 	{
+		if ( lineNumber < 0)
+			return "Error: " + message;
+		
 		if ( columnNumber < 0)
 			return "Error @Line " + lineNumber + ": " + message;
 		
@@ -80,6 +83,9 @@ public class ScriptError {
 		// TODO: map Nashorn error messages to be more meaningful in GIFScript's context
 		StackTraceElement[] stackElement = NashornException.getScriptFrames(e);
 		
-		return new ScriptError( e.getMessage(), stackElement[0].getLineNumber(), -1, fileName);
+		if ( stackElement.length > 0)
+			return new ScriptError( e.getMessage(), stackElement[0].getLineNumber(), -1, fileName);
+		else
+			return new ScriptError( e.getMessage(), -1, -1, fileName);
 	}
 }

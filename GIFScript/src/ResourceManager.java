@@ -6,8 +6,10 @@
 /* A manager for external file resources to be accessed by scripts */
 
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 
 import javax.imageio.ImageIO;
@@ -20,15 +22,28 @@ public class ResourceManager {
 		loadedImages = new HashMap<String, BufferedImage>();
 	}
 	
-	public boolean loadResource ( String key, File file)
+	public boolean loadResource ( String key, File file) throws IOException
 	{
 		BufferedImage img;
-		try {
-			img = ImageIO.read( file);
-		} catch (IOException e) {
-			e.printStackTrace();
+
+		img = ImageIO.read( file);
+
+		if ( img == null)
 			return false;
+		
+		loadedImages.put( key, img);
+		return true;
+	}
+	
+	public boolean loadResource ( String key, byte[] data) throws IOException
+	{
+		BufferedImage img;
+		
+		try ( InputStream in = new ByteArrayInputStream( data))
+		{
+			img = ImageIO.read(in);
 		}
+
 		
 		if ( img == null)
 			return false;

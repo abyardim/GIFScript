@@ -49,12 +49,14 @@ public class ScriptInterpreter {
 			
 			// successful
 			return null;
-		} catch ( ScriptException e)
+		}
+		catch ( ScriptException e)
 		{
 			return ScriptError.parseScriptException( e, "script");
 		}
 		catch ( Exception e)
 		{
+			// TODO: module exceptions?
 			return ScriptError.parseException( e, "script");
 		}
 	}

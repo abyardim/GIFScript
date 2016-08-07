@@ -11,6 +11,7 @@ import java.awt.Font;
 import java.awt.Stroke;
 import java.awt.geom.Point2D;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
@@ -191,7 +192,7 @@ public class ScriptEnvironment {
 		return textElement;
 	}
 	
-	public String loadImage ( String key, String name)
+	public String loadImage ( String key, String name) throws IOException
 	{
 		res.loadResource( key, new File( name));
 		
@@ -274,6 +275,13 @@ public class ScriptEnvironment {
 		scene.update( ms);
 	}
 	
+	public void loadLibrary ( String name) throws GifScriptModuleException
+	{
+		ModuleLoader loader = new ModuleLoader( name);
+		
+		loader.load( this);
+	}
+	
 	///// GIF property control
 	
 	public void newFrame ( int delay, boolean clearScene)
@@ -302,6 +310,25 @@ public class ScriptEnvironment {
 	public void clearAllComments ( )
 	{
 		/// TODO GIF comment extension
+	}
+	
+	public void setLoop ( boolean loop)
+	{
+		/// TODO GIF looping option
+	}
+	
+	///// module loading interface
+	
+	// add a module resource to environment
+	protected void addModuleResource ( String name, byte[] data)
+	{
+		// TODO implement resource loading from module
+	}
+	
+	// evaluate a module script
+	protected void loadModuleScript ( String script) throws Exception
+	{
+		engine.eval( script);
 	}
 	
 	///// internal helper functions

@@ -25,7 +25,7 @@ public class ModulePacker {
 		this.initScript = new File( initScript);
 	}
 	
-	public void write ( ) throws ModuleNameUndefinedException, FileNotFoundException, IOException
+	public void write ( ) throws GifScriptModuleNameUndefinedException, FileNotFoundException, IOException
 	{
 		File parentFolder = initScript.getParentFile();
 		ArrayList<File> filesToPack = new ArrayList<File>();
@@ -60,7 +60,7 @@ public class ModulePacker {
 		}
 		
 		if ( moduleName.isEmpty())
-			throw new ModuleNameUndefinedException("Module name unspecified");
+			throw new GifScriptModuleNameUndefinedException("Module name unspecified");
 
 		try ( ZipOutputStream zipOut = new ZipOutputStream(new FileOutputStream( new File(parentFolder, moduleName + ".gsc"))))
 		{

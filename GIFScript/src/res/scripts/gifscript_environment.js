@@ -11,6 +11,13 @@ if ( typeof _gifscript_env == 'undefined') {
     throw new Error( "_gifscript_env not loaded.");
 }
 
+//// loading a GIFScript module
+
+function module ( module_name)
+{
+    _gifscript_env.loadLibrary( module_name)
+}
+
 //// GIF control
 
 function frame ( delay, clear)
