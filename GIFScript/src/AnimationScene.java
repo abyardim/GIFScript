@@ -95,6 +95,7 @@ public class AnimationScene implements UpdateManager {
 		}
 	}
 	
+	@Override
 	public void addUpdateable ( Updateable r)
 	{
 		updateables.add( r);
@@ -102,16 +103,19 @@ public class AnimationScene implements UpdateManager {
 		foldUpdateHierarchy ( );
 	}
 	
+	@Override
 	public void removeUpdateable ( Updateable r)
 	{
 		updateables = updateables.stream().filter( x -> x != r).collect( Collectors.toCollection( ArrayList::new));
 	}
 
+	@Override
 	public  ArrayList<Updateable> getUpdateables ( )
 	{
 		return updateables;
 	}
 	
+	@Override
 	public void update ( double dt)
 	{
 		foldUpdateHierarchy ( );
