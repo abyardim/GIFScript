@@ -36,7 +36,7 @@ public class ScriptInterpreter {
 	{
 		// initialize a 256x256 black background scene
 		scene = new AnimationScene( );
-		writer = new GIFWriter( 256, 256, -1);
+		writer = new GIFWriterDefault( 256, 256, -1);
 		
 		// create a Nashorn script engine
 		ScriptEngineManager factory = new ScriptEngineManager();
