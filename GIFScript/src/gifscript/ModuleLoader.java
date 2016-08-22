@@ -24,17 +24,19 @@ import javax.script.ScriptException;
 public class ModuleLoader {
 	
 	private String moduleName;
+	private File path;
 	
-	public ModuleLoader ( String moduleName)
+	public ModuleLoader ( String moduleName, File path)
 	{
 		this.moduleName = moduleName;
+		this.path = path;
 	}
 	
 	public void load ( ScriptEnvironment env) throws GifScriptModuleNotFoundException, 
 														GifScriptModuleScriptException, 
 														GifScriptModuleResourceNotFoundException
 	{
-		File moduleFile = new File( moduleName + ".gsc");
+		File moduleFile = path;
 		
 		
 		try ( ZipFile zip = new ZipFile( moduleFile))

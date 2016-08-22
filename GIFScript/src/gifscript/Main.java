@@ -55,7 +55,7 @@ public class Main {
 				byte[] encoded = Files.readAllBytes( new File(args[1]).toPath());
 				String script = new String(encoded, StandardCharsets.UTF_8);
 				
-				interpreter = new ScriptInterpreter( script);
+				interpreter = new ScriptInterpreter( script, new File(args[1]).getParentFile());
 			} catch ( IOException e1) {
 				// script file not found
 				e1.printStackTrace();

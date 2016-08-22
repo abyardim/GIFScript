@@ -31,11 +31,10 @@ public class GIFWriterDefault implements GIFWriter {
 	//private Color backgroundColor;
 	private ArrayList<GIFFrame> frames;
 	
-	// number of loops the GIF to be played
+	// number of loops the GIF will played
 	// -1 for continuous looping
 	private int loopCount;
-	
-	
+
 	public GIFWriterDefault ( )
 	{
 		frames = new ArrayList<GIFFrame>();
@@ -70,6 +69,7 @@ public class GIFWriterDefault implements GIFWriter {
 		addFrame( scene);
 	}
 	
+	@Override
 	public void addFrame ( GIFFrame newFrame)
 	{				
 		frames.add( newFrame);
@@ -77,6 +77,7 @@ public class GIFWriterDefault implements GIFWriter {
 		resizeFrames();
 	}
 	
+	@Override
 	public void setDimensions ( int width, int height)
 	{
 		if ( width == this.width && height == this.height)
@@ -88,6 +89,7 @@ public class GIFWriterDefault implements GIFWriter {
 		resizeFrames();
 	}
 	
+	@Override
 	public void writeToStream ( ImageOutputStream outputStream) throws IIOException, IOException
 	{
 		if ( frames.isEmpty())

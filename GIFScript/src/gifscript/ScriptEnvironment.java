@@ -5,6 +5,7 @@
 
 /* Sets up a Nashorn instance and initializes GIFScript methods, classes */
 /* and constants for use within the script */
+
 package gifscript;
 
 import java.awt.Color;
@@ -31,11 +32,16 @@ public class ScriptEnvironment {
 	
 	private ResourceManager res;
 	
-	public ScriptEnvironment ( AnimationScene scene, GIFWriter writer, ScriptEngine engine)
+	// the directory of the script
+	private File scriptDirectory;
+	
+	public ScriptEnvironment ( AnimationScene scene, GIFWriter writer, ScriptEngine engine, File directory)
 	{
 		this.scene = scene;
 		this.writer = writer;
 		this.engine = engine;
+		
+		this.scriptDirectory = directory;
 		
 		res = new ResourceManager();
 		
@@ -195,7 +201,7 @@ public class ScriptEnvironment {
 	
 	public String loadImage ( String key, String name) throws IOException
 	{
-		res.loadResource( key, new File( name));
+		res.loadResource( key, getPath( name));
 		
 		return key;
 	}
@@ -276,9 +282,10 @@ public class ScriptEnvironment {
 		scene.update( ms);
 	}
 	
+	// load external GIFScript module
 	public void loadLibrary ( String name) throws GifScriptModuleException
 	{
-		ModuleLoader loader = new ModuleLoader( name);
+		ModuleLoader loader = new ModuleLoader( name, getPath( name + ".gsc"));
 		
 		loader.load( this);
 	}
@@ -347,5 +354,22 @@ public class ScriptEnvironment {
 		// run initialization script
 		initScript = getClass().getResourceAsStream( "/res/scripts/gifscript_environment.js");
 		engine.eval( new InputStreamReader( initScript, "UTF-8"));	
+	}
+	
+	// get absolute path of a resource/module to be loaded
+	private File getPath ( String res)
+	{
+		File f = new File( res);
+		
+		if ( f.exists())
+		{
+			return f.getAbsoluteFile();
+		}
+		else
+		{
+			f = new File( scriptDirectory, res);
+			
+			return f.getAbsoluteFile();
+		}
 	}
 }

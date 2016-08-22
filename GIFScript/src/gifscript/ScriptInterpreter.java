@@ -6,6 +6,7 @@
 /* Executes a GIFScript, reports any errors */
 package gifscript;
 
+import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.IIOException;
@@ -22,14 +23,17 @@ public class ScriptInterpreter {
 	private GIFWriter writer;
 	private AnimationScene scene;
 	
+	private File scriptDirectory;
+	
 	// GIFScript ScriptEnvironment object 
 	// to be accessed by Nashorn, not used directly
 	@SuppressWarnings("unused")
 	private ScriptEnvironment environment;
 	
-	public ScriptInterpreter ( String script)
+	public ScriptInterpreter ( String script, File directory)
 	{
 		this.script = script;
+		this.scriptDirectory = directory;
 	}
 	
 	public ScriptError runScript ( )
@@ -42,7 +46,7 @@ public class ScriptInterpreter {
 		ScriptEngineManager factory = new ScriptEngineManager();
 		engine = factory.getEngineByName("nashorn");
 		
-		environment = new ScriptEnvironment( scene, writer, engine);
+		environment = new ScriptEnvironment( scene, writer, engine, scriptDirectory);
 		
 		// execute the script
 		try {
