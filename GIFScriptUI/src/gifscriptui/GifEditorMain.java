@@ -1,11 +1,22 @@
+
+/* Copyright (c) 2016 Ali Batuhan Yardim                                 */
+/* This work is available under the MIT License.                         */
+/* Please see the file LICENSE in this distribution for license details. */
+
+/* Program entry point */
+/* JavaFX application, a simple UI interface for GIFScript */
+
 package gifscriptui;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Optional;
@@ -15,6 +26,7 @@ import java.util.regex.Pattern;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -22,6 +34,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.Separator;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.ToolBar;
@@ -30,6 +43,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.stage.FileChooser;
@@ -50,16 +64,21 @@ public class GifEditorMain extends Application {
 	private TextArea outputTextArea;
 	private ImageView gifViewer;
 	
+	private ProgressIndicator progressIndicator;
+	
 	private Stage stage;
 	
 	// typical save mechanism variables
 	private boolean fileChanged = true;
 	private File saveFile = null;
 	
-	Image currentGIF;
+	// gif preview threads
+	GIFPreviewer previewService;
+	
+	Image defaultGIF;
 	
     @Override
-    public void start ( Stage primaryStage) {
+    public void start ( Stage primaryStage) {    	
         BorderPane root = new BorderPane();
         
     	///// left half: editor, output and tool bar
@@ -75,11 +94,11 @@ public class GifEditorMain extends Application {
         						new Separator(),
         						saveButton,
         						saveAsButton,
-        						openButton);        
+        						openButton);    
         
         leftBorderPane.setTop( bar1);
         
-        /// JavaScript Editor component
+        // JavaScript Editor component
         
         codeArea = new CodeArea();
         
@@ -97,7 +116,7 @@ public class GifEditorMain extends Application {
         
         leftBorderPane.setCenter( pane);
         
-        /// text area for "compiler" output
+        // text area for "compiler" output
         
         String stylesheetOutput = GifEditorMain.class.getResource("css/output-style.css").toExternalForm();
        
@@ -111,33 +130,54 @@ public class GifEditorMain extends Application {
         
         root.setCenter( leftBorderPane);
         
-        ///// right half of the scene: ImageViewer & toolbar
-         
+        ///// right half of the scene: ImageViewer & tool bar
+        BorderPane rightBorderPane = new BorderPane();
+        rightBorderPane.setMinWidth(400);
+        
+        // tool bar on the right
         ToolBar bar2 = new ToolBar();
+        
+        HBox tbLeft, tbRight;
+        
         playButton = new Button("Play"); playButton.addEventHandler( ActionEvent.ACTION, (e) -> onClickPlay(e));
         pauseButton = new Button( "Pause"); pauseButton.addEventHandler( ActionEvent.ACTION, (e) -> onClickPause(e));
         exportButton = new Button( "Export..."); exportButton.addEventHandler( ActionEvent.ACTION, (e) -> onClickExport(e));
         
-        bar2.getItems().addAll( playButton,
-        						pauseButton,
-        						exportButton);
+        tbLeft = new HBox( playButton, pauseButton, exportButton);
         
-        /// ImageViewer component
+        progressIndicator = new ProgressIndicator();
+        progressIndicator.setProgress( -1.0);
+        progressIndicator.setMaxHeight( 20);
+        progressIndicator.setPrefHeight( 20);
+        progressIndicator.setVisible( false);
         
+        tbRight = new HBox( progressIndicator);
+        
+        // align the play/pause buttons to the left, the progress
+        // indicator to the right
+        HBox.setHgrow( tbLeft, Priority.ALWAYS );
+        HBox.setHgrow( tbRight, Priority.ALWAYS );
+
+        tbLeft.setAlignment( Pos.CENTER_LEFT );
+        tbRight.setAlignment( Pos.CENTER_RIGHT );
+        
+        bar2.getItems().addAll( tbLeft, tbRight);
+        
+        rightBorderPane.setBottom( bar2);
+        
+        // ImageViewer component
         gifViewer = new ImageView();
-        currentGIF = new Image( getClass().getResource( "vis/empty-scene.gif").toExternalForm());
-        gifViewer.setImage( currentGIF);
+        
+        defaultGIF = new Image( getClass().getResource( "vis/empty-scene.gif").toExternalForm());
+        
+        gifViewer.setImage( defaultGIF);
         gifViewer.setFitWidth( 380);
         gifViewer.setPreserveRatio( true);
-        
-        BorderPane rightBorderPane = new BorderPane();
-        rightBorderPane.setBottom( bar2);
+        gifViewer.setOnMouseClicked( e -> onMouseClickScene(e));  
+        gifViewer.fitWidthProperty().bind( rightBorderPane.widthProperty()); 
+        gifViewer.fitHeightProperty().bind( rightBorderPane.heightProperty());
+
         rightBorderPane.setCenter( gifViewer);
-        rightBorderPane.setMinWidth(400);
-        
-        rightBorderPane.getStylesheets().add( GifEditorMain.class.getResource("css/controls.css").toExternalForm());
-        gifViewer.setId( "imageview");
-        gifViewer.setOnMouseClicked( e -> onMouseClickScene(e));
         
         root.setRight( rightBorderPane);
         
@@ -153,7 +193,18 @@ public class GifEditorMain extends Application {
     }
     
     ///// program entry point    
-    public static void main(String[] args) {
+    public static void main ( String[] args)
+    {
+    	// command line access
+    	if ( args.length > 0 && args[0].equals( "-c"))
+    	{
+    		String[] args2;
+    		args2 = Arrays.copyOfRange( args, 1, args.length);
+    		gifscript.Main.main( args2);
+    		
+    		return;
+    	}
+    	
         launch(args);
     }
     	
@@ -411,20 +462,54 @@ public class GifEditorMain extends Application {
     // executed on play button clicked
     public void onClickPlay ( ActionEvent event)
     {
+    	gifViewer.setImage( defaultGIF);
+    
+    	// stop previous thread
+    	if ( previewService != null)
+    		previewService.stop();
     	
+    	File workingDir = saveFile != null ? saveFile.getParentFile() : new File( System.getProperty("user.dir"));
+    	
+    	previewService = new GIFPreviewer( codeArea.getText(), gifViewer, outputTextArea, workingDir);
+    	previewService.start();
     }
 
     // executed on pause button clicked
     public void onClickPause ( ActionEvent event)
     {
-    	
+    	if ( previewService != null)
+    	{
+    		previewService.stop();
+    		previewService = null;
+    	}
     }
 
     // executed on export button clicked
     public void onClickExport ( ActionEvent event)
     {
+    	if ( fileChanged)
+    	{
+    		Alert alert = new Alert( AlertType.CONFIRMATION);
+    		alert.setTitle( "Save script");
+    		alert.setHeaderText( "Script file has been modified");
+    		alert.setContentText( "Save changes to " + ( saveFile == null ? "unnamed" : saveFile.getName()) + 
+    								" first?");
+
+    		Optional<ButtonType> result = alert.showAndWait();
+    		if ( result.get() == ButtonType.OK){
+    			onClickSave( null);
+    		} else {
+    			// cancel export
+    		    return;
+    		}
+    	}
+    	
     	FileChooser fileChooser = new FileChooser();
     	fileChooser.setTitle( "Export GIF");
+    	fileChooser.getExtensionFilters().addAll(
+      	         new FileChooser.ExtensionFilter("GIF files", "*.gif"),
+      	         new FileChooser.ExtensionFilter("All Files", "*.*"));
+    	
     	File target = fileChooser.showSaveDialog( stage);
     	
     	if ( target == null)
@@ -446,8 +531,8 @@ public class GifEditorMain extends Application {
     		px = (int) event.getX();
     		py = (int) event.getY();
     		
-    		px = (int) ( px * currentGIF.getWidth() / gifViewer.getLayoutBounds().getWidth());
-    		py = (int) ( py * currentGIF.getHeight() / gifViewer.getLayoutBounds().getHeight());
+    		px = (int) ( px * gifViewer.getImage().getWidth() / gifViewer.getLayoutBounds().getWidth());
+    		py = (int) ( py *gifViewer.getImage().getHeight() / gifViewer.getLayoutBounds().getHeight());
     		
     		codeArea.insertText( index, "new Point2(" + px + ", " + py + ")");
     	}
@@ -456,6 +541,9 @@ public class GifEditorMain extends Application {
     // window close attempt
     public void onCloseWindow ( WindowEvent e)
     {
+    	if ( previewService != null)
+    		previewService.stop();
+    	
     	if ( checkDiscardChanges() < 0)
     		e.consume();
     }
@@ -471,7 +559,7 @@ public class GifEditorMain extends Application {
     
     private int checkDiscardChanges ( )
     {
-    	if ( !fileChanged)
+    	if ( !fileChanged || codeArea.getText().length() == 0)
     		return 1;
     	
     	Alert alert = new Alert(AlertType.CONFIRMATION);
@@ -489,7 +577,7 @@ public class GifEditorMain extends Application {
     	
     	if (result.get() == buttonTypeSave)
     	{
-    	    onClickSave( null);    		
+    	    onClickSave( null);
     		return 1;
     	}
     	else if (result.get() == buttonTypeDiscard)
@@ -504,7 +592,25 @@ public class GifEditorMain extends Application {
     
     private void exportGIF ( File f)
     {
-    	// TODO
+    	if ( saveFile == null)
+    		return;
+    	
+        progressIndicator.setVisible( true);
+    	
+    	// capture the output to stdout
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PrintStream ps = new PrintStream(baos);
+        PrintStream old = System.out;
+        System.setOut(ps);
+
+        gifscript.Main.main( new String[]{ "-b", saveFile.getAbsolutePath(),f.getAbsolutePath()});
+        
+        System.out.flush();
+        System.setOut(old);
+        
+        outputTextArea.setText( "Output:\n" + baos.toString());
+        
+        progressIndicator.setVisible( false);
     }
     
 }
