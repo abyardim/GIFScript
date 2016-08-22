@@ -1,3 +1,10 @@
+
+/* Copyright (c) 2016 Ali Batuhan Yardim                                 */
+/* This work is available under the GNU License.                         */
+/* Please see the file LICENSE in this distribution for license details. */
+
+/* Coordinator class for the GIF frame consumer/generator threads   */
+
 package gifscriptui;
 
 import java.io.File;

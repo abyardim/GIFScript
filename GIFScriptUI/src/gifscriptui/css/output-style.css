@@ -1,4 +1,10 @@
 
+/* Copyright (c) 2016 Ali Batuhan Yardim                                 */
+/* This work is available under the GNU License.                         */
+/* Please see the file LICENSE in this distribution for license details. */
+
+/* Font of the console output TextArea */
+
 .root {
     -fx-font-family: monospace;
 }
