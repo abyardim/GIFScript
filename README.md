@@ -10,10 +10,10 @@ Both parts of the project require Java 1.8. The GUI tool uses [RichTextFX](https
 
 ## Building GIFScript
 The source is distributed as an Eclipse project. Simple steps to build the tools:
-1. Download the source from GitHub or clone the repository: `git clone https://github.com/abyardim/GIFScript`
-2. Import the projects into your workspace, from File>Import>General>Existing projects into workspace
-3. Download [richtextfx-fat-0.6.10](https://github.com/TomasMikula/RichTextFX/releases/tag/v0.6.10) and add the jar your classpath through Project properties>Java Build Path>Add External JARs.
-4. Build/run either project.
+* Download the source from GitHub or clone the repository: `git clone https://github.com/abyardim/GIFScript`
+* Import the projects into your workspace, from File>Import>General>Existing projects into workspace
+* Download [richtextfx-fat-0.6.10](https://github.com/TomasMikula/RichTextFX/releases/tag/v0.6.10) and add the jar your classpath through Project properties>Java Build Path>Add External JARs.
+* Build/run either project.
 
 The memory usage of the tool can rise for larger GIFs, so consider increasing the maximum Java VM heap size using the option `-Xms` when necessary.
 
@@ -27,7 +27,6 @@ The core tool is available under the MIT license. The GUI tool in GIFScriptUI is
 Some examples of GIFScript code can be found in the repository, under [/examples](https://github.com/abyardim/GIFScript/tree/master/GIFScript/examples), also published on my [GSoC blog](http://gifscript.blogspot.com/).
 
 ![cube](https://1.bp.blogspot.com/-1iCqFAqo29A/V0TWJbHLvLI/AAAAAAAAAAk/dHDP1qhTII06W8w0JbS24UZebUdRiGSsACLcB/s1600/cube-reduced.gif "Cube")
-![TSP](https://4.bp.blogspot.com/-V06vQMbOJD4/V3GiKMhj2JI/AAAAAAAAABE/W8o--hFKyo46Jny1-5Txu4B1UoIqokgAwCKgB/s1600/turkey_TSP.gif "TSP")
 ![dudeney](http://i.imgur.com/aQUvSox.gif "Dudeney dissection")
 ![Fourier](http://i.imgur.com/Z0iXz01.gif "Fourier series vs. Fourier transform")
 
