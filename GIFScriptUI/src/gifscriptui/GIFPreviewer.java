@@ -18,6 +18,8 @@ public class GIFPreviewer {
 	private ImageView targetView;
 	private TextArea console;
 	
+	private Thread producerThread, consumerThread;
+	
 	private File scriptDirectory;
 	
 	private FrameBag cache;
@@ -40,14 +42,14 @@ public class GIFPreviewer {
 		sceneUpdater = new SceneUpdaterTask( targetView, cache);
 		frameProducer = new FrameProducerTask( console, script, cache, scriptDirectory);
 		
-		Thread producer = new Thread( frameProducer);
-		Thread consumer = new Thread( sceneUpdater);
+		producerThread = new Thread( frameProducer);
+		consumerThread = new Thread( sceneUpdater);
 		
-		producer.setDaemon( true);
-		consumer.setDaemon( true);
+		producerThread.setDaemon( true);
+		consumerThread.setDaemon( true);
 		
-		producer.start();		
-		consumer.start();
+		producerThread.start();		
+		consumerThread.start();
 	}
 	
 	public void stop ( )
@@ -55,6 +57,16 @@ public class GIFPreviewer {
 		sceneUpdater.cancel();
 		frameProducer.cancel();
 		
+		try {
+			if ( producerThread.isAlive())
+				producerThread.join();
+		} catch ( InterruptedException e) {}
+		
+		try {
+			if ( consumerThread.isAlive())
+				consumerThread.join();
+		} catch ( InterruptedException e) {}
+				
 		cache = null;
 	}
 }

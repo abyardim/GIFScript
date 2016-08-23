@@ -116,8 +116,6 @@ function poly ( points, strokeColor, fillColor, stroke)
 {
     pointArray = Java.to( points, "java.awt.geom.Point2D.Double[]");
 
-    print( "test2");
-
     if ( typeof strokeColor == "undefined")
         return _gifscript_env.drawPolygon( pointArray, true, false, Color.BLACK, Color.WHITE);
     else if ( typeof fillColor == "undefined")
@@ -221,15 +219,15 @@ function compoundCurve ( psx, psy)                      // TODO variable args
 // combine shapes
 function combine ( )
 {
-    var args = (arguments.length === 1 ? [arguments[0]] : Array.apply(null, arguments));  // TODO: clean array allocation code
-    return _gifscript_env.combinePaths( Java.to( args, "SGeometricPrimitive[]"));
+    var args = (arguments.length === 1 ? [arguments[0]] : Array.apply(null, arguments)); 
+    return _gifscript_env.combinePaths(Java.to(args, "gifscript.gifscript.SGeometricPrimitive[]"));
 }
 
 // combine shapes
 function group ( )
 {
-    var args = (arguments.length === 1 ? [arguments[0]] : Array.apply(null, arguments));  // TODO: clean array allocation code
-    return _gifscript_env.groupObjects( Java.to( args, "SceneObject[]"));
+    var args = (arguments.length === 1 ? [arguments[0]] : Array.apply(null, arguments)); 
+    return _gifscript_env.groupObjects( Java.to( args, "gifscript.SceneObject[]"));
 }
 
 function write ( string, x, y, font)

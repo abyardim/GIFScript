@@ -26,7 +26,8 @@ public abstract class SGeometricPrimitive extends SceneObject implements Sketcha
 	{
 		this.points = new Point2D.Double[ points.length];
 		
-		System.arraycopy( points, 0, this.points, 0, points.length );
+		for ( int i = 0; i < points.length; i++)
+			this.points[i] = new Point2D.Double( points[i].x, points[i].y);
 		
 		drawFill = false;
 		drawStroke = true;

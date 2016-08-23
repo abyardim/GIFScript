@@ -540,12 +540,12 @@ public class GifEditorMain extends Application {
     
     // window close attempt
     public void onCloseWindow ( WindowEvent e)
-    {
-    	if ( previewService != null)
-    		previewService.stop();
-    	
+    {    	
     	if ( checkDiscardChanges() < 0)
     		e.consume();
+    	
+    	if ( previewService != null)
+    		previewService.stop();
     }
     
     // private helpers

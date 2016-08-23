@@ -57,7 +57,7 @@ public class SceneUpdaterTask extends Task<Void> {
 					frameCount++;
 				}				
 				
-				Thread.sleep( Math.max( currentFrame.getFrametime() - 1, 15));
+				Thread.sleep( currentFrame == null ? 15 : Math.max( currentFrame.getFrametime() - 1, 15));
 				
 				if ( isCancelled())
 					throw new InterruptedException();
